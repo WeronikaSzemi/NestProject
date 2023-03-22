@@ -1,6 +1,16 @@
-import { Controller, Get, Inject } from "@nestjs/common";
+import {
+	Controller,
+	DefaultValuePipe,
+	Get,
+	HttpStatus,
+	ImATeapotException,
+	Inject,
+	Param,
+	ParseIntPipe
+} from "@nestjs/common";
 import { ShopService } from "./shop.service";
 import { ShopItemInterface } from "../interfaces/shop";
+import { CheckAgePipe } from "../pipes/check-age.pipe";
 
 @Controller('/shop')
 export class ShopController {
@@ -13,6 +23,11 @@ export class ShopController {
 	@Get('/')
 	getShopList(): Promise<ShopItemInterface[]> {
 		return this.shopService.getItems();
+	}
+
+	@Get('/test')
+	test() {
+		throw new ImATeapotException('Oh, no!');
 	}
 
 }
