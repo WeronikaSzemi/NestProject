@@ -14,6 +14,7 @@ import { CheckAgePipe } from "../pipes/check-age.pipe";
 import { PasswordProtectGuard } from "../guards/password-protect.guard";
 import { UsePassword } from "../decorators/use-password.decorator";
 import { MyTimeoutInterceptor } from "../interceptors/my-timeout.interceptor";
+import { MyCacheInterceptor } from "../interceptors/my-cache.interceptor";
 
 @Controller('/shop')
 export class ShopController {
@@ -24,6 +25,7 @@ export class ShopController {
 	}
 
 	@Get('/')
+	@UseInterceptors(MyTimeoutInterceptor, MyCacheInterceptor)
 	getShopList(): Promise<ShopItemInterface[]> {
 		return this.shopService.getItems();
 	}
@@ -36,7 +38,7 @@ export class ShopController {
 	@Get('/admin')
 	// @UseGuards(PasswordProtectGuard)
 	// @UsePassword('admin1')
-	@UseInterceptors(MyTimeoutInterceptor)
+	@UseInterceptors(MyTimeoutInterceptor, MyCacheInterceptor)
 	getShopListForAdmin(): Promise<ShopItemInterface[]> {
 		return new Promise(resolve => {});
 	}

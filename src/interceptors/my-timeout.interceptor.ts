@@ -3,7 +3,7 @@ import { Observable, throwError, TimeoutError } from "rxjs";
 import { catchError, timeout } from "rxjs/operators";
 
 @Injectable()
-export class MyTimeoutInterceptor implements  NestInterceptor {
+export class MyTimeoutInterceptor implements NestInterceptor {
 	async intercept(
 		context: ExecutionContext,
 		next: CallHandler,
