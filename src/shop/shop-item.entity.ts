@@ -1,6 +1,6 @@
 import { BaseEntity, Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import {ShopItemInterface} from "../interfaces/shop";
-// import {ItemInBasket} from "../basket/item-in-basket.entity";
+import {ItemInBasket} from "../basket/item-in-basket.entity";
 
 @Entity()
 export class ShopItem extends BaseEntity implements ShopItemInterface {
@@ -23,7 +23,7 @@ export class ShopItem extends BaseEntity implements ShopItemInterface {
 		scale: 2,
 	})
 	price: number;
-	//
-	// @OneToMany(type => ItemInBasket, entity => entity.shopItem)
-	// itemsInBasket: ItemInBasket[];
+
+	@OneToMany(type => ItemInBasket, entity => entity.shopItem)
+	itemsInBasket: ItemInBasket[];
 }

@@ -17,11 +17,11 @@ export class ItemInBasket extends BaseEntity {
     @Column()
     count: number;
 
-    // @ManyToOne(type => ShopItem, entity => entity.itemsInBasket)
-    // @JoinColumn()
-    // shopItem: ShopItem;
-    //
-    // @ManyToOne(type => User, entity => entity.itemsInBasket)
-    // @JoinColumn()
-    // user: User;
+    @ManyToOne(type => ShopItem, entity => entity.itemsInBasket)
+    @JoinColumn()
+    shopItem: ShopItem;
+
+    @ManyToOne(type => User, entity => entity.itemsInBasket)
+    @JoinColumn()
+    user: User;
 };
