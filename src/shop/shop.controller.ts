@@ -1,20 +1,16 @@
 import {
+	Body,
 	Controller,
-	DefaultValuePipe,
 	Get,
-	HttpStatus,
-	ImATeapotException,
-	Inject,
-	Param,
-	ParseIntPipe, UseGuards, UseInterceptors
+	Inject, Param,
+	Post, Res, UploadedFiles, UseInterceptors,
 } from "@nestjs/common";
 import { ShopService } from "./shop.service";
 import { ShopItemInterface } from "../interfaces/shop";
-import { CheckAgePipe } from "../pipes/check-age.pipe";
-import { PasswordProtectGuard } from "../guards/password-protect.guard";
-import { UsePassword } from "../decorators/use-password.decorator";
-import { MyTimeoutInterceptor } from "../interceptors/my-timeout.interceptor";
-import { MyCacheInterceptor } from "../interceptors/my-cache.interceptor";
+import { AddProductDto } from "./dto/add-product.dto";
+import { FileFieldsInterceptor } from "@nestjs/platform-express";
+import * as path from "path";
+import { multerStorage, storageDir } from "../utils/storage";
 
 @Controller('/shop')
 export class ShopController {
@@ -25,21 +21,31 @@ export class ShopController {
 	}
 
 	@Get('/')
-	@UseInterceptors(MyTimeoutInterceptor, MyCacheInterceptor)
 	getShopList(): Promise<ShopItemInterface[]> {
 		return this.shopService.getItems();
 	}
 
-	@Get('/test')
-	test() {
-		throw new ImATeapotException('Oh, no!');
+	@Post('/')
+	@UseInterceptors(
+		FileFieldsInterceptor([
+			{
+				name: 'photo', maxCount: 10,
+			},
+			], { storage: multerStorage(path.join(storageDir(), 'product-photos')) },
+		),
+	)
+	addProduct(
+		@Body() req: AddProductDto,
+		@UploadedFiles() files: MulterDiskUploadedFiles,
+	): Promise<ShopItemInterface> {
+		return this.shopService.addProduct(req, files);
 	}
 
-	@Get('/admin')
-	// @UseGuards(PasswordProtectGuard)
-	// @UsePassword('admin1')
-	@UseInterceptors(MyTimeoutInterceptor, MyCacheInterceptor)
-	getShopListForAdmin(): Promise<ShopItemInterface[]> {
-		return new Promise(resolve => {});
+	@Get('/photo/:id')
+	async getPhoto(
+		@Param('id') id: string,
+		@Res() res: any,
+	): Promise<any> {
+		return this.shopService.getPhoto(id, res);
 	}
 }

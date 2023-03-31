@@ -11,7 +11,7 @@ async function bootstrap() {
 
     app.use(cookieParser());
 
-    app.useGlobalFilters(new GlobalExceptionFilter);
+    // app.useGlobalFilters(new GlobalExceptionFilter);
 
     app.useGlobalPipes(
         new ValidationPipe({
@@ -19,10 +19,13 @@ async function bootstrap() {
             whitelist: true,
             forbidNonWhitelisted: true,
             transform: true,
+            transformOptions: {
+                enableImplicitConversion: true,
+            }
         }),
     );
-
-    (app as NestExpressApplication).use(helmet());
+    //
+    // (app as NestExpressApplication).use(helmet());
     await app.listen(3000);
 }
 

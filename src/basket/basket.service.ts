@@ -5,12 +5,15 @@ import {AddItemDto} from "./dto/add-item.dto";
 import {ItemInBasket} from "./item-in-basket.entity";
 import { UserService } from "../user/user.service";
 import { getConnection } from "typeorm";
+import { MailService } from "../mail/mail.service";
+import { addedItemToBasketInfoEmailTemplate } from "../templates/email/added-item-to-basket-info";
 
 @Injectable()
 export class BasketService {
     constructor(
         @Inject(ShopService) private shopService: ShopService,
         @Inject(UserService) private userService: UserService,
+        @Inject(MailService) private mailService: MailService,
     ) {
     }
 
@@ -52,6 +55,8 @@ export class BasketService {
 
         await item.save();
 
+        await this.mailService.sendMail(user.email, 'Dziękujemy za dodanie do koszyka!', addedItemToBasketInfoEmailTemplate());
+
         return {
             isSuccess: true,
             id: item.id,
@@ -87,6 +92,8 @@ export class BasketService {
         if (!user) {
             throw new Error('User not found.');
         }
+
+        await this.mailService.sendMail(user.email, 'Lista produktów w koszyku', `W Twoim koszyku znajdują się następujące produkty: x, y, z.`)
 
         return ItemInBasket.find({
             where: {
