@@ -6,6 +6,7 @@ import { ShopModule } from './shop/shop.module';
 import { BasketModule } from "./basket/basket.module";
 import { UserModule } from "./user/user.module";
 import { MailModule } from './mail/mail.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
     imports: [
@@ -13,7 +14,8 @@ import { MailModule } from './mail/mail.module';
         ShopModule,
         BasketModule,
         UserModule,
-        MailModule,
+        // MailModule,
+        AuthModule,
     ],
     controllers: [AppController],
     providers: [AppService],

@@ -1,12 +1,9 @@
 import { IsNumber, IsString } from "class-validator";
 
 export class AddItemDto {
-    @IsString()
+    // @IsString()
     productId: string;
 
-    @IsString()
-    userId: string;
-
-    @IsNumber()
+    // @IsNumber()
     count: number;
 }
