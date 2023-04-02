@@ -14,7 +14,7 @@ export class BasketService {
     constructor(
         @Inject(ShopService) private shopService: ShopService,
         @Inject(UserService) private userService: UserService,
-        @Inject(MailService) private mailService: MailService,
+        // @Inject(MailService) private mailService: MailService,
     ) {
     }
 
@@ -51,7 +51,7 @@ export class BasketService {
 
         await item.save();
 
-        await this.mailService.sendMail(user.email, 'Dziękujemy za dodanie do koszyka!', addedItemToBasketInfoEmailTemplate());
+        // await this.mailService.sendMail(user.email, 'Dziękujemy za dodanie do koszyka!', addedItemToBasketInfoEmailTemplate());
 
         return {
             isSuccess: true,
@@ -89,7 +89,7 @@ export class BasketService {
             throw new Error('User not found.');
         }
 
-        await this.mailService.sendMail(user.email, 'Lista produktów w koszyku', `W Twoim koszyku znajdują się następujące produkty: x, y, z.`)
+        // await this.mailService.sendMail(user.email, 'Lista produktów w koszyku', `W Twoim koszyku znajdują się następujące produkty: x, y, z.`)
 
         return ItemInBasket.find({
             where: {

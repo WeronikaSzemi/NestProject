@@ -9,7 +9,7 @@ import { MailModule } from "../mail/mail.module";
     imports: [
         forwardRef(() => ShopModule),
         forwardRef(() => UserModule),
-        forwardRef(() => MailModule),
+        // forwardRef(() => MailModule),
     ],
     controllers: [BasketController],
     providers: [BasketService],

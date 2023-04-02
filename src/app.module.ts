@@ -7,6 +7,7 @@ import { BasketModule } from "./basket/basket.module";
 import { UserModule } from "./user/user.module";
 import { MailModule } from './mail/mail.module';
 import { AuthModule } from './auth/auth.module';
+import { ConsoleModule } from "nestjs-console";
 
 @Module({
     imports: [
@@ -16,6 +17,7 @@ import { AuthModule } from './auth/auth.module';
         UserModule,
         // MailModule,
         AuthModule,
+        ConsoleModule,
     ],
     controllers: [AppController],
     providers: [AppService],

@@ -3,8 +3,12 @@ import { RegisterDto } from "./dto/register.dto";
 import { RegisterUserResponse } from "../interfaces/user";
 import { User } from "./user.entity";
 import { hashPwd } from "../utils/hash-pwd";
+import { Command, Console } from "nestjs-console";
 
 @Injectable()
+@Console({
+	name: 'users',
+})
 export class UserService {
 	filter(user: User): RegisterUserResponse {
 		const { id, email } = user;
@@ -22,5 +26,28 @@ export class UserService {
 
 	async getOneUser(id: string): Promise<User> {
 		return await User.findOne(id);
+	}
+
+	@Command({
+		command: 'list',
+		description: 'List all users',
+	})
+	async listUsersCmd() {
+		console.log(
+			(await User.find()).map(this.filter)
+		);
+	}
+
+	@Command({
+		command: 'add <email> <pwd>',
+		description: 'Add new User',
+	})
+	async addUserCmd(email: string, pwd: string) {
+		console.log(
+			await this.register({
+				email,
+				pwd,
+			})
+		);
 	}
 }
